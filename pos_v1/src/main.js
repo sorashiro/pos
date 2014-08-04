@@ -12,7 +12,7 @@ function printInventory(inputs){
     for(var j = 0; j < allItems.length; j++){
       if(inputs[i].substring(0,10) === allItems[j].barcode){
         if(inputs[i].length > 10){
-          goodsNum[j] = inputs[i].split("-")[1];
+          goodsNum[j] += parseInt(inputs[i].split("-")[1]);
         }else{
           goodsNum[j] ++;
         }
