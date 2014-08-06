@@ -1,56 +1,46 @@
-function Pos(cart, promotionCal){
+function Pos(cart, promotionCal) {
     this.cart = cart;
     this.promotionCal = promotionCal;
 }
 
-Pos.prototype.printInventory = function(){
-    var sumPrice = 0;
-    promotionSumPrice = 0;
-    farmatter = Utils.formatter;
-}
+Pos.prototype.printInventory = function () {
 
-Pos.prototype.titlePrint = function() {
-    var result = '***<没钱赚商店>购物清单***\n' + '打印时间：' + this.date + '\n';
-    return result;
-};
+    var itemsText = '',
+        promotionItemsText = '',
+        totalPrice = 0,
+        promotionTotalPrice = 0,
+        formatter = Utils.formatter;
 
-Pos.prototype.commonPrint = function(barcodes) {
-    var result = '----------------------\n';
-    for(var i = 0; i < barcodes.length; i++){
-        if(itemlist[i].ispromotion === 1){
-            result += '名称：' + barcodes[i].item.name
-                      + '，数量：' + barcodes[i].num + barcodes[i].item.unit
-                      + '，单价：' + barcodes[i].item.price.toFixed(2)
-                      + '(元)，小计：' + (barcodes[i].item.price * (barcodes[i].num - parseInt(barcodes[i].num / 3))).toFixed(2)
-                      + '(元)\n';
-            this.sumPrice +=  barcodes[i].item.price * (barcodes[i].num - parseInt(barcodes[i].num / 3));
-        }else{
-            result += '名称：' + barcodes[i].item.name
-           + '，数量：' + barcodes[i].num + barcodes[i].item.unit
-                + '，单价：' + barcodes[i].item.price.toFixed(2)
-                + '(元)，小计：' + (barcodes[i].item.price * barcodes[i].num).toFixed(2)
-                + '(元)\n';
-          this.sumPrice +=  barcodes[i].item.price * barcodes[i].num;
+
+    for (var i = 0; i < this.cart.cartItems.length; i++) {
+
+        var cartItem = this.cart.cartItems[i],
+            item = cartItem.item,
+            itemQuantity = cartItem.quantity,
+            subtotal = cartItem.getSubtotalWithPromotion();
+
+        if (cartItem.promotionQuantity > 0) {
+            promotionItemsText += '名称：' + item.name + '，数量：' + cartItem.promotionQuantity + item.unit + '\n';
+            promotionTotalPrice += cartItem.promotionSubtotal;
         }
 
-    }return result;
-};
+        itemsText += '名称：' + item.name + '，数量：' + itemQuantity + item.unit +
+            '，单价：' + formatter.formatPrice(item.price) + '(元)，小计：' + formatter.formatPrice(subtotal) + '(元)\n';
 
-Inventory.prototype.givePrint = function(itemlist) {
-    var result = '----------------------\n挥泪赠送商品：\n';
-    for(var i = 0; i < itemlist.length; i++){
-        if(itemlist[i].ispromotion === 1 && itemlist[i].num > 2)
-            result += '名称：' + itemlist[i].item.name + '，数量：'
-             + parseInt(itemlist[i].num / 3) + itemlist[i].item.unit
-                + '\n';
-            this.savePrice +=  parseInt(itemlist[i].num / 3) * itemlist[i].item.price;
-    }return result;
-};
+        totalPrice += subtotal;
+    }
 
-Inventory.prototype.pricePrint = function() {
-    var result = '----------------------\n'
-               + '总计：' + this.sumPrice.toFixed(2) + '(元)\n'
-               + '节省：' + this.savePrice.toFixed(2) + '(元)\n'
-               + '**********************';
-    return result;
+    console.log(
+            '***<没钱赚商店>购物清单***\n' +
+            '打印时间：' + formatter.formatDateTime(new Date()) + '\n' +
+            '----------------------\n' +
+            itemsText +
+            '----------------------\n' +
+            '挥泪赠送商品：\n' +
+            promotionItemsText +
+            '----------------------\n' +
+            '总计：' + formatter.formatPrice(totalPrice) + '(元)\n' +
+            '节省：' + formatter.formatPrice(promotionTotalPrice) + '(元)\n' +
+            '**********************'
+    );
 };
