@@ -1,6 +1,6 @@
 function printInventory(inputs){
 
-    var transverter = new Transverter(allItems);
+    var transverter = new Transverter(inputs);
 
     var cart = new Cart();
 

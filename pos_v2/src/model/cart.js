@@ -9,4 +9,3 @@ CartItem.prototype.smallCal = function() {
 CartItem.prototype.getBarcode = function() {
   return this.item.barcode;
 };
-//.........unfinished
