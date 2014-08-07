@@ -5,26 +5,29 @@ function Pos(cart, promotionCal) {
 
 Pos.prototype.printInventory = function () {
 
+    console.log(this.cart.length);
+
     var itemsText = '',
         promotionItemsText = '',
         totalPrice = 0,
         promotionTotalPrice = 0,
         formatter = Utils.formatter;
 
+    this.promotionCal.cal(this.cart.cartItems);
 
     for (var i = 0; i < this.cart.cartItems.length; i++) {
 
         var cartItem = this.cart.cartItems[i],
             item = cartItem.item,
-            itemQuantity = cartItem.quantity,
-            subtotal = cartItem.getSubtotalWithPromotion();
+            itemNum = cartItem.num,
+            subtotal = cartItem.itemSum();
 
-        if (cartItem.promotionQuantity > 0) {
-            promotionItemsText += '名称：' + item.name + '，数量：' + cartItem.promotionQuantity + item.unit + '\n';
+        if (cartItem.promotionNum > 0) {
+            promotionItemsText += '名称：' + item.name + '，数量：' + cartItem.promotionNum + item.unit + '\n';
             promotionTotalPrice += cartItem.promotionSubtotal;
         }
 
-        itemsText += '名称：' + item.name + '，数量：' + itemQuantity + item.unit +
+        itemsText += '名称：' + item.name + '，数量：' + itemNum + item.unit +
             '，单价：' + formatter.formatPrice(item.price) + '(元)，小计：' + formatter.formatPrice(subtotal) + '(元)\n';
 
         totalPrice += subtotal;

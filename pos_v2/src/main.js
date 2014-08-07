@@ -5,6 +5,7 @@ function printInventory(inputs){
     var cart = new Cart(inputs);
 
     var promotionCal = new PromotionCal();
+    var promotions = loadPromotions();
 
     var pos = new Pos(cart, promotionCal);
         pos.printInventory(inputs);

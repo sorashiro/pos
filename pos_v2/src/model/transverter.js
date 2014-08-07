@@ -1,5 +1,5 @@
-function Transverter() {
-
+function Transverter(inputs) {
+    this.inputs = inputs;
 }
 Transverter.prototype.change = function(inputs) {
 
