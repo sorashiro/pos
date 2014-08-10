@@ -1,10 +1,12 @@
-function Pos(cart, promotionCal) {
+function Pos(cart) {
     this.cart = cart;
-    this.promotionCal = promotionCal;
+    //this.promotionCal = promotionCal;
 }
 
 Pos.prototype.printInventory = function () {
 
+    this.cart.calculate();
+    var total = this.cart.total;
     console.log(this.cart.length);
 
     var itemsText = '',
@@ -13,24 +15,17 @@ Pos.prototype.printInventory = function () {
         promotionTotalPrice = 0,
         formatter = Utils.formatter;
 
-    this.promotionCal.cal(this.cart.cartItems);
+    //this.promotionCal.cal(this.cart.cartItems);
 
     for (var i = 0; i < this.cart.cartItems.length; i++) {
-
-        var cartItem = this.cart.cartItems[i],
-            item = cartItem.item,
-            itemNum = cartItem.num,
-            subtotal = cartItem.itemSum();
-
-        if (cartItem.promotionNum > 0) {
-            promotionItemsText += '名称：' + item.name + '，数量：' + cartItem.promotionNum + item.unit + '\n';
-            promotionTotalPrice += cartItem.promotionSubtotal;
+        var cartItem = this.cart.cartItems[i];
+        if(cartItem.isPromotion){
+            promotionItemsText += '名称：' + cartItem.item.name + '，数量：' + cartItem.saveNum + cartItem.item.unit + '\n';
         }
 
-        itemsText += '名称：' + item.name + '，数量：' + itemNum + item.unit +
-            '，单价：' + formatter.formatPrice(item.price) + '(元)，小计：' + formatter.formatPrice(subtotal) + '(元)\n';
+        itemsText += '名称：' + cartItem.item.name + '，数量：' + cartItem.num + cartItem.item.unit +
+            '，单价：' + formatter.formatPrice(cartItem.item.price) + '(元)，小计：' + formatter.formatPrice(cartItem.total) + '(元)\n';
 
-        totalPrice += subtotal;
     }
 
     console.log(
@@ -42,8 +37,8 @@ Pos.prototype.printInventory = function () {
             '挥泪赠送商品：\n' +
             promotionItemsText +
             '----------------------\n' +
-            '总计：' + formatter.formatPrice(totalPrice) + '(元)\n' +
-            '节省：' + formatter.formatPrice(promotionTotalPrice) + '(元)\n' +
+            '总计：' + formatter.formatPrice(this.cart.total) + '(元)\n' +
+            '节省：' + formatter.formatPrice(this.cart.totalSave) + '(元)\n' +
             '**********************'
     );
 };

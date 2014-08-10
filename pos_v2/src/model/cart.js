@@ -1,29 +1,42 @@
-function Cart(barcodes){
-    this.barcodes = barcodes;
+function Cart(){
     this.cartItems = [];
+
+    this.total = 0;
+    this.totalSave = 0;
+    this.totalSaveCount = 0;
+    this.promotionItems = [];
 }
 Cart.prototype.get = function (barcode) {
 
-    //var cartItem;
-    var items = loadAllItems();
-    for (var i = 0; i < items.length; i++) {
-        if (items[i].barcode === barcode) {
-            // cartItem = this.cartItems[i];
-            // break;
-            return items[i];
+    for (var i = 0; i < this.cartItems.length; i++) {
+        if (this.cartItems[i].barcode === barcode) {
+            return this.cartItems[i];
         }
     }
 
-//    return cartItem;
+    return null;
 };
-Cart.prototype.add = function (item, num){
 
-    var existCartItem;
-
-    if (existCartItem = this.get(item.barcode)) {
-        existCartItem.num += num;
-        return;
+Cart.prototype.add = function (cartItem){
+    var item =  this.get(cartItem);
+    if(item == null){
+        this.cartItems.push(cartItem);
     }
-
-    this.cartItems.push(new CartItem(item, num));
+    else{
+        item.num += cartItem.num;
+    }
 };
+
+Cart.prototype.calculate = function(){
+    var allPromotion = loadPromotions();
+    for (var i = 0; i < this.cartItems.length; i++){
+        this.cartItems[i].itemSum(allPromotion[0]);
+        this.total += this.cartItems[i].total;
+        this.totalSave += this.cartItems[i].saveMoney;
+        this.totalSaveCount += this.cartItems[i].saveNum;
+
+        if(this.cartItems[i].isPromotion){
+            this.promotionItems.push(this.cartItems[i]);
+        }
+    }
+}
