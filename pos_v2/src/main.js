@@ -1,18 +1,5 @@
 function printInventory(inputs){
 
-    // var transverter = new Transverter(inputs);
-    //
-    // var cart = new Cart(inputs);
-    //
-    // var promotionCal = new PromotionCal();
-    // var promotions = loadPromotions();
-    //
-    // var pos = new Pos(cart, promotionCal);
-    //     pos.printInventory(inputs);
-//    concole.log(pos..........)
-//    console.log(pos.titlePrint() + pos.commonPrint()
-//              + pos.givePrint() + pos.pricePrint());
-
     var cart = new Cart();
     var allCartItmes = LoadItems(inputs);
     for(var i = 0; i < allCartItmes.length; i++){

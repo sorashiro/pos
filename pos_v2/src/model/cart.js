@@ -1,6 +1,5 @@
 function Cart(){
     this.cartItems = [];
-
     this.total = 0;
     this.totalSave = 0;
     this.totalSaveCount = 0;

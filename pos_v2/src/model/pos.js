@@ -1,6 +1,5 @@
 function Pos(cart) {
     this.cart = cart;
-    //this.promotionCal = promotionCal;
 }
 
 Pos.prototype.printInventory = function () {
@@ -14,8 +13,6 @@ Pos.prototype.printInventory = function () {
         totalPrice = 0,
         promotionTotalPrice = 0,
         formatter = Utils.formatter;
-
-    //this.promotionCal.cal(this.cart.cartItems);
 
     for (var i = 0; i < this.cart.cartItems.length; i++) {
         var cartItem = this.cart.cartItems[i];
